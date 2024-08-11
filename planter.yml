@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: planter
+spec:
+  schedule: "5 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          # This node is the only node with the FTDI device
+          nodeName: nas
+          restartPolicy: Never
+          containers:
+            - name: planter
+              image: "nas.home.ijmacd.com:5143/ijmacd/planter:1.0.0"
+              imagePullPolicy: Always
+              command: ["python", "run.py"]
+              args: ["3"]
+              volumeMounts:
+                - mountPath: /dev/bus/usb
+                  name: usb-dev
+              securityContext:
+                privileged: true
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 10Mi
+                limits:
+                  memory: 10Mi
+          volumes:
+            - name: usb-dev
+              hostPath:
+                path: /dev/bus/usb
+                type: Directory
