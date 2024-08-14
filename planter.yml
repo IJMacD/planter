@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: planter
 spec:
-  schedule: "5 * * * *"
+  schedule: "0 1/4 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -14,7 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: planter
-              image: "nas.home.ijmacd.com:5143/ijmacd/planter:1.0.0"
+              image: "nas.home.ijmacd.com:5143/ijmacd/planter:1.0.1"
               imagePullPolicy: Always
               command: ["python", "run.py"]
               args: ["3"]
