@@ -23,15 +23,16 @@ gpio.configure(url, direction=0xff)
 # port = gpio.get_gpio()
 
 # CBUS
-Ftdi.set_cbus_direction(0xff, 0xff)
+ftdi = Ftdi.create_from_url(url)
+ftdi.set_cbus_direction(0x0f, 0x0f)
 
 def set_pins(level = "low"):
     if level == "high":
         gpio.write(0xff)            # DBUS
-        Ftdi.set_cbus_gpio(0xff)    # CBUS
+        ftdi.set_cbus_gpio(0x0f)    # CBUS
     else:
         gpio.write(0x00)            # DBUS
-        Ftdi.set_cbus_gpio(0x00)    # CBUS
+        ftdi.set_cbus_gpio(0x00)    # CBUS
 
 debug_print("Connected")
 
