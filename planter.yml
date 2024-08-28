@@ -14,8 +14,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: planter
-              image: "nas.home.ijmacd.com:5143/ijmacd/planter:1.0.1"
-              imagePullPolicy: Always
+              image: "ijmacd/planter:1.1.0"
               command: ["python", "run.py"]
               args: ["3"]
               volumeMounts:
