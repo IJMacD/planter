@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: planter
 spec:
-  schedule: "0 1/4 * * *"
+  schedule: "59 * * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -16,7 +16,10 @@ spec:
             - name: planter
               image: "ijmacd/planter:1.1.0"
               command: ["python", "run.py"]
-              args: ["3"]
+              args: ["$(FLOW_DURATION)"]
+              envFrom:
+                - configMapRef:
+                    name: planter-config
               volumeMounts:
                 - mountPath: /dev/bus/usb
                   name: usb-dev
@@ -33,3 +36,10 @@ spec:
               hostPath:
                 path: /dev/bus/usb
                 type: Directory
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "planter-config"
+data:
+  FLOW_DURATION: "5"
